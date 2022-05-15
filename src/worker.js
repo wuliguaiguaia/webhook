@@ -9,13 +9,15 @@ process.on('message', async (m) => {
   switch (action) {
     case 'load': 
       // 条件校验与权限判断
-      const errorString = conditionJudge(payload, headers, isManual) || authJudge(payload, headers, isManual, name)
+      const errorString = await conditionJudge(payload, headers, isManual)
+        || await authJudge(payload, headers, isManual, name)
       if (errorString) {
         return process.send({ action: 'end', payload: errorString})
       }
       // 执行脚本
       await executeScript(name)
-      return process.send({ action: 'end', payload: result2String('success', 0, name) })
+      const result = await result2String('success', 0, name)
+      return process.send({ action: 'end', payload: result })
     case 'exit':
       process.exit()
   }
