@@ -47,6 +47,7 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
         scp: |
           'webhook.zip' => /home/homework/nodeapp
         last_ssh: |
-          unzip -d /home/homework/nodeapp/webhook webhook.zip
-          cd /home/homework/nodeapp/webhook
+          cd /home/homework/nodeapp/
+          unzip -d webhook webhook.zip
+          cd webhook
           pm2 start process.json
