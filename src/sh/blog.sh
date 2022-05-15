@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORK_PATH="/home/homework/webroot/static"
+WORK_PATH="/Users/alias/code/pratice/react-blog/webhook"
 
 echo "------ 进入项目目录 ------"
 
