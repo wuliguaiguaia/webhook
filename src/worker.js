@@ -42,7 +42,6 @@ function conditionJudge(payload, headers, isManual) {
 
 function authJudge(payload, headers, isManual, name) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
-  return
   if (isManual) {
     const haveAuth = comparePass(WEBHOOK_SECRET, payload.secret)
     if (haveAuth) return
