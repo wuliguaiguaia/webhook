@@ -1,7 +1,7 @@
 # workflow： 一次持续集成的过程就是一个workflow
 # workflow -> job -> step -> action，它们是层级关系
 
-name: Build app and deploy to Tencent # 当前workflow的名称
+name: webhook 部署 # 当前workflow的名称
 
 on: # workflow 触发条件
 

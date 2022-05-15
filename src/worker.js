@@ -55,13 +55,15 @@ function executeScript(name) {
   return new Promise(resolve => {
     const cp = require('child_process')
     const child = cp.spawn('sh', [path.join(__dirname, `./sh/${name}.sh`)])
-    // worker.child_process = child
+    logger.info(name, '开始执行shell')
     const buffers = []
     child.stdout.on('data', buffer => {
       buffers.push(buffer)
     })
     child.stdout.on('end', () => {
-      const log = Buffer.concat(buffers)
+      let log = Buffer.concat(buffers).toString()
+      const pattern = /(\^\[\[\d+m){2}/g // 删除颜色乱码
+      log = log.replace(pattern, '')
       logger.info(name, log.toString())
       resolve()
     })
