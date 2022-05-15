@@ -40,5 +40,4 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
         local: '.'
         remote: /home/homework/nodeapp/webhook
 
-    - name: run
-      run: pm2 start process.json
+        last_ssh: pm2 start process.json
