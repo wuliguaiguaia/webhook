@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
     return res.end(result2String('请求未命中', 1, name))
   }
   if (!projectCheck(req)) {
-    return res.end(result2String('改项目不支持自动化', 2, name))
+    return res.end(result2String('该项目不支持自动化', 2, name))
   }
 
   let worker = status[name]?.worker
@@ -25,11 +25,12 @@ const server = http.createServer((req, res) => {
     killWorker(name) 
   }
   worker = createWorker(name, res)
-  worker.on('message', ({ action }) => {
+  worker.on('message', ({ action, payload }) => {
     switch (action) {
       case 'end':
-        res.end(result2String('success', 0, name))
+        res.end(payload)
         killWorker(name)
+        break
     }
   })
 
@@ -42,7 +43,13 @@ const server = http.createServer((req, res) => {
       const buffers = Buffer.concat(chunks)
       const payload = JSON.parse(buffers)
       const { repository: { name }} = payload
-      worker.send({ name, url:req.url, headers: req.headers, action: 'load', payload, t: Date.now(), logger} )
+      worker.send({
+        name,
+        url: req.url,
+        headers: req.headers,
+        action: 'load',
+        payload
+      })
     } catch (e) {
       logger.error(name, e)
     }
