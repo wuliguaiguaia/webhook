@@ -11,10 +11,10 @@ function parseName(url) {
   return obj.name
 }
 
-function result2String(str, errNo, name) {
+async function result2String(str, errNo, name) {
   const res = JSON.stringify({ str, errNo })
   logger.info(name, res)
-  sendMail(name, str)
+  await sendMail(name, str)
   return res
 }
 
