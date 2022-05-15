@@ -28,10 +28,10 @@ const sendMail = (name, str) => {
   }
   mailTransport.sendMail(message, function (err, msg) {
     if (err) {
-      console.log(err);
-      res.send(err);
+      console.log(err, msg);
+      logger.error(name, '邮件发送失败');
     } else {
-      res.send('success');
+      logger.info(name, '邮件发送成功');
     }
   })
 }
