@@ -1,0 +1,26 @@
+{
+  "name": "webhook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuliguaiguaia/webhook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wuliguaiguaia/webhook/issues"
+  },
+  "homepage": "https://github.com/wuliguaiguaia/webhook#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "log4js": "^6.4.6",
+    "nodemailer": "^6.7.5",
+    "nodemon": "^2.0.15"
+  }
+}
