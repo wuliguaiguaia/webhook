@@ -1,13 +1,21 @@
 const nodemailer = require('nodemailer')
-
+const prefix = '[orange部署]'
 
 
 const options = {
-  from: 'orange 部署<1944063509@qq.com>',
+  from: `${prefix}<${process.env.EMAIL}>`,
   to: process.env.EMAIL,
 }
 
-const prefix = '[orange部署]'
+const mailTransport = nodemailer.createTransport({
+  service: 'qq',
+  secure: true,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_TOKEN
+  }
+})
+
 
 const sendMail = (name, str) => {
   const message = {
@@ -19,14 +27,7 @@ const sendMail = (name, str) => {
       t: Date.now()
     }, null, 2)
   }
-  const mailTransport = nodemailer.createTransport({
-    service: 'qq',
-    secure: true,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_TOKEN
-    }
-  })
+
   mailTransport.sendMail(message, function (err, msg) {
     if (err) {
       console.log(err, msg);
