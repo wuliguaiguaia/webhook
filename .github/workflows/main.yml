@@ -41,7 +41,7 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
         host: ${{ secrets.USER_HOST }}
         user: ${{ secrets.USER_NAME }}
         pass: ${{ secrets.USER_PASS }}
-        connect_timeout: 10s
+        connect_timeout: 20s
         first_ssh:  |
           rm -rf /home/homework/nodeapp/webhook
         scp: |

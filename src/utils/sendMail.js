@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 
 
 const options = {
-  from: process.env.EMAIL,
+  from: 'orange 部署<1944063509@qq.com>',
   to: process.env.EMAIL,
 }
 
