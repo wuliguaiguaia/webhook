@@ -19,7 +19,6 @@
   "homepage": "https://github.com/wuliguaiguaia/webhook#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "log4js": "^6.4.6",
     "nodemailer": "^6.7.5",
     "nodemon": "^2.0.15"
   }
