@@ -23,21 +23,30 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
     # uses：直接用别人封装好的action
     # https://github.com/marketplace/actions/checkout
 
-    # - name: install # 步骤名称
-    #   run: npm install # 该步骤运行的命令或者 action
+    - name: install # 步骤名称
+      run: npm install # 该步骤运行的命令或者 action
+
+    - name: zip
+      run:  zip -r -q webhook.zip *
 
     - name: deploy
       # 构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
-      uses: cross-the-world/scp-pipeline@master
+      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      env:
+        WELCOME: "ssh scp ssh pipelines"
+        LASTSSH: "Doing something after copying"
       # https://github.com/marketplace/actions/scp-pipeline
       with:
         # 连接服务器需要的host、user、password
         host: ${{ secrets.USER_HOST }}
         user: ${{ secrets.USER_NAME }}
         pass: ${{ secrets.USER_PASS }}
-        connect_timeout: 10s # 服务器连接超时时间
-        # 将 local 复制到 remote
-        local: '.'
-        remote: /home/homework/nodeapp/webhook
-
-        last_ssh: pm2 start process.json
+        connect_timeout: 10s
+        first_ssh:  |
+          rm -rf /home/homework/nodeapp/webhook
+        scp: |
+          'webhook.zip' => /home/homework/nodeapp
+        last_ssh: |
+          unzip -d /home/homework/nodeapp/webhook webhook.zip
+          cd /home/homework/nodeapp/webhook
+          pm2 start process.json
