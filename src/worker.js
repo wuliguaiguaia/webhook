@@ -4,7 +4,7 @@ const logger = require('./utils/logger')
 logger.create()
 
 process.on('message', async (m) => {
-  const { name, action, payload, t, url, headers } = m
+  const { name, action, payload, url, headers } = m
   const isManual = /^\/webhook\/manual\?.+?$/.test(url)
   switch (action) {
     case 'load': 
@@ -15,14 +15,9 @@ process.on('message', async (m) => {
       }
       // 执行脚本
       await executeScript(name)
-      return process.send({ action: 'end' })
+      return process.send({ action: 'end', payload: result2String('success', 0, name) })
     case 'exit':
       process.exit()
-      return;
-    default:
-      setTimeout(() => {
-        process.send({ n: name, payload, t })
-      }, 5000)
   }
 })
 
