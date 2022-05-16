@@ -39,7 +39,7 @@ function formatData(level, content) {
 function write(level, name, content) {
   const filePath = filePaths[name]
   const data = formatData(level, content)
-  console.log(data);
+  console.log(data)
   fs.writeFileSync(filePath, data, { flag: 'a+' })
 }
 

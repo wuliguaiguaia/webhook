@@ -7,21 +7,25 @@ const logger = require('./src/utils/logger')
 const { parseName, result2String, projectCheck} = require('./src/utils')
 
 logger.create()
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const name = parseName(req.url)
+  let result = ''
   logger.info(name, 'starting...')
   sendMail(name, '启动部署')
   res.setHeader('content-type', 'application/json')
   if (req.method !== 'POST' || !/^\/webhook(\/manual)?\?.+$/.test(req.url)) {
-    return res.end(result2String('请求未命中', 1, name))
+    result = await result2String('请求未命中', 1, name)
+    return res.end(result)
   }
   if (!projectCheck(req)) {
-    return res.end(result2String('该项目不支持自动化', 2, name))
+    result = await result2String('该项目不支持自动化', 2, name)
+    return res.end(result)
   }
 
   let worker = status[name]?.worker
   if (worker) {
-    status[name].res.end(result2String('请求重复，正在取消本次部署', -1, name))
+    result = await result2String('请求重复，正在取消本次部署', -1, name)
+    status[name].res.end(result)
     killWorker(name) 
   }
   worker = createWorker(name, res)

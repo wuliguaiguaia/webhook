@@ -31,12 +31,12 @@ const sendMail = (name, str) => {
   return new Promise((resolve) => {
     mailTransport.sendMail(message, function (err, msg) {
       if (err) {
-        console.log(err, msg);
+        console.log(err, msg)
         resolve(true)
-        logger.error(name, '邮件发送失败');
+        logger.error(name, '邮件发送失败')
       } else {
         resolve(false)
-        logger.info(name, '邮件发送成功');
+        logger.info(name, '邮件发送成功')
       }
     })
   })

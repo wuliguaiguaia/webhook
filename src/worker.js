@@ -48,6 +48,7 @@ function authJudge(payload, headers, isManual, name) {
   }
   return result2String('无权限', 5, name)
 }
+
 function executeScript(name) {
   return new Promise(resolve => {
     const cp = require('child_process')
