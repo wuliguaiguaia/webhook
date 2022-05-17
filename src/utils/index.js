@@ -23,7 +23,7 @@ function sign(payload, secret) {
   const body = JSON.stringify(payload)
   // 对比的是 x-hub-signature，所以必须是sha1算法
   const hmac = crypto.createHmac('sha1', secret)
-  // github 加密的是请求体，这里同样
+  // github 加密的是数据体，这里同样
   const up = hmac.update(body)
   // 使用 digest 方法生成加密内容(必须是hex格式)
   const signature = up.digest('hex')
@@ -37,7 +37,9 @@ function comparePass(originPass, pass) {
 
 function projectCheck(req) {
   const name = parseName(req.url)
-  const allSh = fs.readdirSync(path.join(__dirname, './../sh')).map(item => item.slice(0, -3)) // shell文件名为项目名
+  const allSh = fs.readdirSync(path.join(__dirname, './../sh')).map(item => {
+    return path.basename(item, path.extname(item)) // 获取不带后缀的文件名
+  })
   if (!allSh.includes(name)) { // 如果不包含该项目
     return false
   }
