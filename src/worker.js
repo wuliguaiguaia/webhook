@@ -63,7 +63,11 @@ function executeScript(name) {
       const pattern = /(\^\[\[\d+m){2}/g // 删除颜色乱码
       log = log.replace(pattern, '')
       logger.info(name, log.toString())
-      resolve()
     })
+    child.on('exit', function (code, signal) {
+      // todo
+      resolve({ code, signal })
+      console.log('child process exited with' + `code ${code} and signal ${signal}`);
+    });
   })
 }
