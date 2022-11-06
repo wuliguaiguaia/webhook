@@ -2,7 +2,7 @@
 
 shell 运行出错处理！！
 
-
+静态文件部署：先js等，再html
 
 # webhook
 

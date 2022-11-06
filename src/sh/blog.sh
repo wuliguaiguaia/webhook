@@ -28,11 +28,13 @@ echo "------ build ------"
 
 npm run build
 
+# 创建新版本
+mkdir /usr/share/nginx/html/blog2
+cp -r * /usr/share/nginx/html/blog2
+
+#删除新版本并改名
 rm -rf /usr/share/nginx/html/blog
-
-mkdir /usr/share/nginx/html/blog
-
-cp -r * /usr/share/nginx/html/blog
+mv /usr/share/nginx/html/blog2 /usr/share/nginx/html/blog
 
 # first start
 # pm2 start npm --name blog -- run server
