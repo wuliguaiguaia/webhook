@@ -4,53 +4,50 @@
 name: webhook 部署 # 当前workflow的名称
 
 on: # workflow 触发条件
-
   push: # 比如push时触发
-
-    branches: [ master ] # 指定分支，只有 test-actions 分支发生push事件才触发
+    branches: [master] # 指定分支，只有 test-actions 分支发生push事件才触发
 
 jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
-
   build: # 任务名为build
-
     runs-on: ubuntu-latest # 指定运行所需要的虚拟机环境
 
     steps: # 每个 job 由多个 step 构成，一步步完成。
+      # 每个 step 可以依次执行一个或多个命令（action）。 当前共有 4 个step
 
-    # 每个 step 可以依次执行一个或多个命令（action）。 当前共有 4 个step
+      - uses: actions/checkout@v3 # 从github拉取源码
+      # uses：直接用别人封装好的action
+      # https://github.com/marketplace/actions/checkout
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
 
-    - uses: actions/checkout@v3 # 从github拉取源码
-    # uses：直接用别人封装好的action
-    # https://github.com/marketplace/actions/checkout
+      - name: install # 步骤名称
+        run: pnpm install # 该步骤运行的命令或者 action
 
-    - name: install # 步骤名称
-      run: pnpm install # 该步骤运行的命令或者 action
+      - name: zip
+        run: zip -r -q webhook.zip *
 
-    - name: zip
-      run:  zip -r -q webhook.zip *
-
-    - name: deploy
-      # 构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
-      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-      env:
-        WELCOME: "ssh scp ssh pipelines"
-        LASTSSH: "Doing something after copying"
-      # https://github.com/marketplace/actions/ssh-scp-ssh-pipelines
-      with:
-        # 连接服务器需要的host、user、password
-        host: ${{ secrets.USER_HOST }}
-        user: ${{ secrets.USER_NAME }}
-        pass: ${{ secrets.USER_PASS }}
-        connect_timeout: 20s
-        first_ssh:  |
-          rm -rf /home/homework/nodeapp/webhook
-        scp: |
-          'webhook.zip' => /home/homework/nodeapp
-        last_ssh: |
-          cd /home/homework/nodeapp/
-          unzip -d webhook webhook.zip
-          cd webhook
-          pm2 start process.json
-
+      - name: deploy
+        # 构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        # https://github.com/marketplace/actions/ssh-scp-ssh-pipelines
+        with:
+          # 连接服务器需要的host、user、password
+          host: ${{ secrets.USER_HOST }}
+          user: ${{ secrets.USER_NAME }}
+          pass: ${{ secrets.USER_PASS }}
+          connect_timeout: 20s
+          first_ssh: |
+            rm -rf /home/homework/nodeapp/webhook
+          scp: |
+            'webhook.zip' => /home/homework/nodeapp
+          last_ssh: |
+            cd /home/homework/nodeapp/
+            unzip -d webhook webhook.zip
+            cd webhook
+            pm2 start process.json
 
 # 如果失败会回退对服务器的所有操作
