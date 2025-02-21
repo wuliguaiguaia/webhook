@@ -4,6 +4,8 @@ WORK_PATH="/home/homework/webroot/static"
 
 echo "------ 进入项目目录 ------"
 
+npm install -g pnpm
+
 cd $WORK_PATH
 
 pwd
@@ -20,13 +22,13 @@ pwd
 
 git checkout master
 
-echo "------ npm install ------"
+echo "------ pnpm install ------"
 
-npm install  2>&1
+pnpm install  2>&1
 
 echo "------ build ------"
 
-npm run build
+pnpm run build
 
 # 创建新版本
 mkdir /usr/share/nginx/html/blog2
@@ -37,7 +39,7 @@ rm -rf /usr/share/nginx/html/blog
 mv /usr/share/nginx/html/blog2 /usr/share/nginx/html/blog
 
 # first start
-# pm2 start npm --name blog -- run server
+# pm2 start pnpm --name blog -- run server
 
 pm2 restart blog
 
